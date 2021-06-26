@@ -10,3 +10,6 @@ Datei wird beim ersten Aufruf heruntergeladen und lokal in Datenbank gespeichert
 
 Möglichkeit zu jeder Straße eigene Notizen hinzuzufügen.
 Zeige alle Straßen mit eigenen Notizen an.
+
+
+Mit Unittests!
