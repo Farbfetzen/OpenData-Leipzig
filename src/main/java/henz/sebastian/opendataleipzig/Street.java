@@ -11,11 +11,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Street {
 
     @Column(unique = true)
-    @XmlElement(name = "NAME")
     private String name;
     @Id
     @Column(unique = true, length = 5)
-    @XmlElement(name = "SCHLUESSEL")
     private String key;
 
     public Street() {}
@@ -29,6 +27,7 @@ public class Street {
         return name;
     }
 
+    @XmlElement(name = "NAME")
     public void setName(final String name) {
         this.name = name;
     }
@@ -37,6 +36,7 @@ public class Street {
         return key;
     }
 
+    @XmlElement(name = "SCHLUESSEL")
     public void setKey(final String key) {
         this.key = key;
     }
