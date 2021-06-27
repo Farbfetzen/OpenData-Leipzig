@@ -49,14 +49,14 @@ public class StreetController {
     }
 
     @GetMapping(path = "/getall")
-    @ResponseBody
-    public List<Street> getAllStreets() {
+    public @ResponseBody List<Street> getAllStreets() {
         return streetRepository.findAll();
     }
 
     @PostMapping(path = "/add")
-    @ResponseBody
-    public Street addStreet(@RequestParam final String name, @RequestParam final String key) {
+    public @ResponseBody Street addStreet(
+            @RequestParam final String name,
+            @RequestParam final String key) {
         final Street street = new Street();
         street.setName(name);
         street.setKey(key);
