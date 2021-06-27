@@ -1,8 +1,6 @@
 package henz.sebastian.opendataleipzig;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +28,7 @@ public class StreetController {
         // The data is parsed sequentially. This is inefficient and
         // should be done with a batch method.
         // TODO: Learn how to do batch xml parsing.
+        // Currently, the XML annotations in the Street class are unnecessary.
 
         final File file = new File("data/Strassenverzeichnis.xml");
         try {
@@ -37,10 +36,12 @@ public class StreetController {
             final JsonNode streetArrayNode = xmlMapper.readTree(file).get("STRASSE");
             for (final JsonNode streetNode : streetArrayNode) {
                 final Street street = new Street();
-                final JsonNode coreDataNode = streetNode.get("STAMMDATEN");
-                street.setName(coreDataNode.get("NAME").asText());
-                street.setKey(coreDataNode.get("SCHLUESSEL").asText());
+                street.setName(streetNode.get("STAMMDATEN").get("NAME").asText());
+                street.setKey(streetNode.get("STAMMDATEN").get("SCHLUESSEL").asText());
+                street.setLength(streetNode.get("CHAR").get("LAENGE").asInt());
+                street.setPopulation(streetNode.get("CHAR").get("EINWOHNER").asInt());
                 streetRepository.save(street);
+                // System.out.println(street);
             }
         } catch(final IOException e) {
             e.printStackTrace();
@@ -56,7 +57,10 @@ public class StreetController {
     @PostMapping(path = "/add")
     @ResponseBody
     public Street addStreet(@RequestParam final String name, @RequestParam final String key) {
-        return streetRepository.save(new Street(name, key));
+        final Street street = new Street();
+        street.setName(name);
+        street.setKey(key);
+        return streetRepository.save(street);
     }
 
 }

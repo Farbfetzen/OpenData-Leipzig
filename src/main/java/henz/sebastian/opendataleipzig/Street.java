@@ -15,13 +15,8 @@ public class Street {
     @Id
     @Column(unique = true, length = 5)
     private String key;
-
-    public Street() {}
-
-    public Street(final String name, final String key) {
-        this.name = name;
-        this.key = key;
-    }
+    private int length;
+    private int population;
 
     public String getName() {
         return name;
@@ -41,8 +36,31 @@ public class Street {
         this.key = key;
     }
 
+    public int getLength() {
+        return length;
+    }
+
+    @XmlElement(name = "LAENGE")
+    public void setLength(final int length) {
+        this.length = length;
+    }
+
+    public int getPopulation() {
+        return population;
+    }
+
+    @XmlElement(name = "EINWOHNER")
+    public void setPopulation(final int population) {
+        this.population = population;
+    }
+
     @Override
     public String toString() {
-        return String.format("Straße [Name=%s, Schlüssel=%s]", name, key);
+        // return String.format("Straße [Name=%s, Schlüssel=%s]", name, key);
+        return "Straße [Name=" + name +
+            ", Schlüssel=" + key +
+            ", Länge=" + length +
+            ", Einwohner=" + population +
+            "]";
     }
 }
