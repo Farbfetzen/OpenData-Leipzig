@@ -31,9 +31,8 @@
   - Gibt eine JSON-Liste zurück.
 - Update:
   - POST http://localhost:8080/streets/update
-  - Macht momentan noch nichts.
-  - Wird dazu benutzt werden die Daten zu aktualisieren. Vielleicht mit Parameter Dateiname?
-    Und später dann direkt aus dem Web.
+  - Lädt Straßeninformationen aus einer XML-Datei in die Datenbank.
+    Wird später die Daten direkt aus dem Web herunterladen statt aus einer Datei.
   
 ## Links
 - Opendata-Portal der Stadt Leipzig: https://opendata.leipzig.de
