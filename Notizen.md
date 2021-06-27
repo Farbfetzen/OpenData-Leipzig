@@ -22,4 +22,19 @@
   - http://localhost:8080/h2-console
   - JDBC URL = jdbc:h2:file:./data
   - User Name = user
-  - Password = password
+  - kein Passwort
+- Straße hinzufügen:
+  - http://localhost:8080/streets/add?name=Foo&key=01234
+  - Name und key müssen unique sein. Key ist maximal 5 Zeichen lang.
+- Alle Straßen abfragen:
+  - http://localhost:8080/streets/getall
+  - Gibt eine JSON-Liste zurück.
+- Update:
+  - POST http://localhost:8080/streets/update
+  - Macht momentan noch nichts.
+  - Wird dazu benutzt werden die Daten zu aktualisieren. Vielleicht mit Parameter Dateiname?
+    Und später dann direkt aus dem Web.
+  
+## Links
+- Opendata-Portal der Stadt Leipzig: https://opendata.leipzig.de
+- Infos zum Straßenschlüssel: https://recht.nrw.de/lmi/owa/br_vbl_detail_text?anw_nr=6&vd_id=17207&ver=8&val=17207&sg=0&menu=0&vd_back=N
