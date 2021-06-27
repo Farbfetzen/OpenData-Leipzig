@@ -21,10 +21,17 @@ public class StreetController {
 
     @PostMapping(path = "/update")
     public @ResponseBody ResponseEntity<String> update() {
-        if (updateStreetData()) {
-            return new ResponseEntity<>("Updated database.", HttpStatus.CREATED);
+        final long numberOfRecords = updateStreetData();
+        if (numberOfRecords > 0) {
+            return new ResponseEntity<>(
+                "Updated database with " + numberOfRecords + " records.",
+                HttpStatus.CREATED
+            );
         }
-        return new ResponseEntity<>("Failed to update database.", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(
+            "Failed to update database.",
+            HttpStatus.INTERNAL_SERVER_ERROR
+        );
     }
 
     @GetMapping(path = "/getall")
@@ -42,7 +49,11 @@ public class StreetController {
         return streetRepository.save(street);
     }
 
-    private boolean updateStreetData() {
+    /** Delete all streets entries and fill the database with fresh data.
+     *
+     * @return The number of created records or 0 if it failed.
+     */
+    private long updateStreetData() {
         // Populate the database from an xml file. This is done
         // for development purposes. Later it will download the data
         // from the web.
@@ -50,6 +61,9 @@ public class StreetController {
         // and should be done with a batch method.
         // TODO: Learn how to do batch xml parsing.
         // Currently, the XML annotations in the Street class are unnecessary.
+
+        streetRepository.deleteAllInBatch();
+
         final File file = new File("data/Strassenverzeichnis.xml");
         try {
             final XmlMapper xmlMapper = new XmlMapper();
@@ -64,9 +78,9 @@ public class StreetController {
                 // System.out.println(street);
             }
         } catch (final IOException e) {
-            return false;
+            return 0L;
         }
-        return true;
+        return streetRepository.count();
     }
 
 }
