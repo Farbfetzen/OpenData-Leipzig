@@ -13,7 +13,11 @@
 - Möglichkeit zu jeder Straße eigene Notizen hinzuzufügen. Achtung, selbst eingetragene Infos könnten bei 
   Aktualisierung der Datenbank verloren gehen und müssen irgendwie in die neue übertragen werden.
 - Zeige nur die Straßen mit eigenen Notizen an.
-- Mit **Unittests!**
+- Mit Unittests!
+    - Straße suchen mit vorhandenem Namen.
+    - Straße suchen mit falschem Namen.
+- Straße suchen mit Namen oder Länge > x oder Population < y.
+- Bei der ersten Abfrage, falls das Repo leer ist (mit repo.count() == 0) die Daten aktualisieren.
 
 
 ## Web-Adressen:
