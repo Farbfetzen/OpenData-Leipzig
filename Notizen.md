@@ -16,9 +16,10 @@
 - Mit Unittests!
     - Straße suchen mit vorhandenem Namen.
     - Straße suchen mit falschem Namen.
+    - Update erzeugt Tabelle mit richtiger Länge.
 - Straße suchen mit Namen oder Länge > x oder Population < y.
 - Bei der ersten Abfrage, falls das Repo leer ist (mit repo.count() == 0) die Daten aktualisieren.
-
+- Lombok nutzen für die Entities wie Street.
 
 ## Web-Adressen:
 

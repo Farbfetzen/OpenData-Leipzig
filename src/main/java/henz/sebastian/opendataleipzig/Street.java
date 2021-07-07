@@ -3,11 +3,8 @@ package henz.sebastian.opendataleipzig;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-@XmlRootElement(name = "STRASSE")
 public class Street {
 
     @Column(unique = true)
@@ -18,11 +15,27 @@ public class Street {
     private int length;
     private int population;
 
+    public Street() {}
+
+    public Street(final String name, final String key) {
+        this.name = name;
+        this.key = key;
+    }
+
+    public Street(final String name,
+                  final String key,
+                  final int length,
+                  final int population) {
+        this.name = name;
+        this.key = key;
+        this.length = length;
+        this.population = population;
+    }
+
     public String getName() {
         return name;
     }
 
-    @XmlElement(name = "NAME")
     public void setName(final String name) {
         this.name = name;
     }
@@ -31,7 +44,6 @@ public class Street {
         return key;
     }
 
-    @XmlElement(name = "SCHLUESSEL")
     public void setKey(final String key) {
         this.key = key;
     }
@@ -40,7 +52,6 @@ public class Street {
         return length;
     }
 
-    @XmlElement(name = "LAENGE")
     public void setLength(final int length) {
         this.length = length;
     }
@@ -49,7 +60,6 @@ public class Street {
         return population;
     }
 
-    @XmlElement(name = "EINWOHNER")
     public void setPopulation(final int population) {
         this.population = population;
     }

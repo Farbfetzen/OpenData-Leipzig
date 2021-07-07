@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -43,10 +44,7 @@ public class StreetController {
     public @ResponseBody Street addStreet(
             @RequestParam final String name,
             @RequestParam final String key) {
-        final Street street = new Street();
-        street.setName(name);
-        street.setKey(key);
-        return streetRepository.save(street);
+        return streetRepository.save(new Street(name, key));
     }
 
     /** Delete all streets entries and fill the database with fresh data.
@@ -57,29 +55,30 @@ public class StreetController {
         // Populate the database from an xml file. This is done
         // for development purposes. Later it will download the data
         // from the web.
-        // The data is parsed sequentially. This is probably inefficient
-        // and should be done with a batch method.
-        // TODO: Learn how to do batch xml parsing.
-        // Currently, the XML annotations in the Street class are unnecessary.
 
         streetRepository.deleteAllInBatch();
 
+        final List<Street> streets = new ArrayList<>();
         final File file = new File("data/Strassenverzeichnis.xml");
         try {
             final XmlMapper xmlMapper = new XmlMapper();
             final JsonNode streetArrayNode = xmlMapper.readTree(file).get("STRASSE");
             for (final JsonNode streetNode : streetArrayNode) {
-                final Street street = new Street();
-                street.setName(streetNode.get("STAMMDATEN").get("NAME").asText());
-                street.setKey(streetNode.get("STAMMDATEN").get("SCHLUESSEL").asText());
-                street.setLength(streetNode.get("CHAR").get("LAENGE").asInt());
-                street.setPopulation(streetNode.get("CHAR").get("EINWOHNER").asInt());
-                streetRepository.save(street);
-                // System.out.println(street);
+                final JsonNode stammdatenNode = streetNode.get("STAMMDATEN");
+                final JsonNode charNode = streetNode.get("CHAR");
+                streets.add(new Street(
+                    stammdatenNode.get("NAME").asText(),
+                    stammdatenNode.get("SCHLUESSEL").asText(),
+                    charNode.get("LAENGE").asInt(),
+                    charNode.get("EINWOHNER").asInt()
+                ));
             }
         } catch (final IOException e) {
             return 0L;
         }
+
+        streetRepository.saveAll(streets);
+
         return streetRepository.count();
     }
 
