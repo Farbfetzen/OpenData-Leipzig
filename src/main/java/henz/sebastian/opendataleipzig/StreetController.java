@@ -6,14 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping(path = "/streets")
 public class StreetController {
 
@@ -21,7 +23,7 @@ public class StreetController {
     private StreetRepository streetRepository;
 
     @PostMapping(path = "/update")
-    public @ResponseBody ResponseEntity<String> update() {
+    public ResponseEntity<String> update() {
         final long numberOfRecords = updateStreetData();
         if (numberOfRecords > 0) {
             return new ResponseEntity<>(
@@ -36,15 +38,13 @@ public class StreetController {
     }
 
     @GetMapping(path = "/getall")
-    public @ResponseBody List<Street> getAllStreets() {
+    public List<Street> getAllStreets() {
         return streetRepository.findAll();
     }
 
     @PostMapping(path = "/add")
-    public @ResponseBody Street addStreet(
-            @RequestParam final String name,
-            @RequestParam final String key) {
-        return streetRepository.save(new Street(name, key));
+    public Street addStreet(@RequestBody @Valid final Street street) {
+        return streetRepository.save(street);
     }
 
     /** Delete all streets entries and fill the database with fresh data.
@@ -78,7 +78,6 @@ public class StreetController {
         }
 
         streetRepository.saveAll(streets);
-
         return streetRepository.count();
     }
 
