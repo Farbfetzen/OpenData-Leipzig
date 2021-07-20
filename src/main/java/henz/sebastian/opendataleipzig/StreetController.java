@@ -66,11 +66,17 @@ public class StreetController {
             for (final JsonNode streetNode : streetArrayNode) {
                 final JsonNode stammdatenNode = streetNode.get("STAMMDATEN");
                 final JsonNode charNode = streetNode.get("CHAR");
+                final JsonNode lengthNode = charNode.get("LAENGE");
+                final JsonNode populationNode = charNode.get("EINWOHNER");
+                if (stammdatenNode.get("NAME").asText().equals("Aachener Straße")) {
+                    System.out.println(streetNode);
+                    System.out.println(populationNode);
+                }
                 streets.add(new Street(
                     stammdatenNode.get("NAME").asText(),
                     stammdatenNode.get("SCHLUESSEL").asText(),
-                    charNode.get("LAENGE").asInt(),
-                    charNode.get("EINWOHNER").asInt()
+                    lengthNode.isNull() ? lengthNode.asInt() : null,
+                    populationNode.isNull() ? populationNode.asInt() : null
                 ));
             }
         } catch (final IOException e) {

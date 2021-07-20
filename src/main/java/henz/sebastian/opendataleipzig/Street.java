@@ -24,11 +24,7 @@ public class Street {
     @Column(unique = true, length = 5)
     private String key;
 
-    private int length;
-    private int population;
-
-    public Street(final String name, final String key) {
-        this.name = name;
-        this.key = key;
-    }
+    // Use Integer instead of int because these could be null.
+    private Integer length;
+    private Integer population;
 }
