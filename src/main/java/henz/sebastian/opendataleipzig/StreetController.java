@@ -1,18 +1,19 @@
 package henz.sebastian.opendataleipzig;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -37,54 +38,89 @@ public class StreetController {
         );
     }
 
-    @GetMapping(path = "/getall")
-    public List<Street> getAllStreets() {
+    @GetMapping(path = "/getall", produces = "application/json")
+    public List<Strasse> getAllStreets() {
         return streetRepository.findAll();
     }
 
-    @PostMapping(path = "/add")
-    public Street addStreet(@RequestBody @Valid final Street street) {
-        return streetRepository.save(street);
-    }
+    // @PostMapping(path = "/add")
+    // public Street addStreet(@RequestBody @Valid final Street street) {
+    //     return streetRepository.save(street);
+    // }
 
-    /** Delete all streets entries and fill the database with fresh data.
+    /** Update the database by deleting all entries and populating it from xml file.
      *
      * @return The number of created records or 0 if it failed.
      */
     private long updateStreetData() {
-        // Populate the database from an xml file. This is done
-        // for development purposes. Later it will download the data
-        // from the web.
-
         streetRepository.deleteAllInBatch();
 
-        final List<Street> streets = new ArrayList<>();
+        final SimpleModule customDeserializers = new SimpleModule("MyCustomDeserializers");
+        customDeserializers.addDeserializer(Integer.class, new InvalidNumberToNullDeserializer(Integer.class));
+        customDeserializers.addDeserializer(String.class, new EmptyStringToNullDeserializer(String.class));
+        final ObjectMapper mapper = new XmlMapper()
+            .registerModule(new JavaTimeModule())
+            .registerModule(customDeserializers);
+
         final File file = new File("data/Strassenverzeichnis.xml");
+        final StrassenVerzeichnis sv;
         try {
-            final XmlMapper xmlMapper = new XmlMapper();
-            final JsonNode streetArrayNode = xmlMapper.readTree(file).get("STRASSE");
-            for (final JsonNode streetNode : streetArrayNode) {
-                final JsonNode stammdatenNode = streetNode.get("STAMMDATEN");
-                final JsonNode charNode = streetNode.get("CHAR");
-                final JsonNode lengthNode = charNode.get("LAENGE");
-                final JsonNode populationNode = charNode.get("EINWOHNER");
-                if (stammdatenNode.get("NAME").asText().equals("Aachener Straße")) {
-                    System.out.println(streetNode);
-                    System.out.println(populationNode);
-                }
-                streets.add(new Street(
-                    stammdatenNode.get("NAME").asText(),
-                    stammdatenNode.get("SCHLUESSEL").asText(),
-                    lengthNode.isNull() ? lengthNode.asInt() : null,
-                    populationNode.isNull() ? populationNode.asInt() : null
-                ));
-            }
-        } catch (final IOException e) {
+            sv = mapper.readValue(file, StrassenVerzeichnis.class);
+        } catch(final IOException e) {
+            e.printStackTrace();
             return 0L;
         }
+        streetRepository.saveAll(sv.getStrassen());
 
-        streetRepository.saveAll(streets);
+        // DEBUG: Baue das xml auf und checke so, ob die Struktur dem gewünschten entspricht.
+        // final StrassenVerzeichnis verzeichnis = new StrassenVerzeichnis();
+        // final List<Strasse> streets = new ArrayList<>();
+        // streets.add(new Strasse(1, "foo", "bar"));
+        // streets.add(new Strasse(2, "hurr", "baz"));
+        // verzeichnis.setStrassen(streets);
+        // try {
+        //     final String xml = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(verzeichnis);
+        //     System.out.println(xml);
+        // } catch(final JsonProcessingException e) {
+        //     System.out.println("Error processing sv object.");
+        //     e.printStackTrace();
+        // }
+
         return streetRepository.count();
     }
+}
 
+
+class InvalidNumberToNullDeserializer extends StdDeserializer<Integer> {
+
+    protected InvalidNumberToNullDeserializer(final Class<?> vc) {
+        super(vc);
+    }
+
+    @Override
+    public Integer deserialize(final JsonParser parser,
+                               final DeserializationContext context)
+            throws IOException {
+        try {
+            return Integer.parseInt(parser.getText());
+        } catch(final NumberFormatException e) {
+            return null;
+        }
+    }
+}
+
+
+class EmptyStringToNullDeserializer extends StdDeserializer<String> {
+
+    protected EmptyStringToNullDeserializer(final Class<?> vc) {
+        super(vc);
+    }
+
+    @Override
+    public String deserialize(final JsonParser parser,
+                              final DeserializationContext context)
+            throws IOException {
+        final String str = parser.getText();
+        return str.isEmpty() ? null : str;
+    }
 }
