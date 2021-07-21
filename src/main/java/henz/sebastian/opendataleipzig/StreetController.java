@@ -93,7 +93,7 @@ public class StreetController {
 
 class InvalidNumberToNullDeserializer extends StdDeserializer<Integer> {
 
-    protected InvalidNumberToNullDeserializer(final Class<?> vc) {
+    InvalidNumberToNullDeserializer(final Class<?> vc) {
         super(vc);
     }
 
@@ -112,7 +112,7 @@ class InvalidNumberToNullDeserializer extends StdDeserializer<Integer> {
 
 class EmptyStringToNullDeserializer extends StdDeserializer<String> {
 
-    protected EmptyStringToNullDeserializer(final Class<?> vc) {
+    EmptyStringToNullDeserializer(final Class<?> vc) {
         super(vc);
     }
 
