@@ -17,13 +17,18 @@ class StreetControllerTests {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    private static final String path = "http://localhost:%d/streets%s";
+
     @Test
     void updateReturnsCorrectStatusAndBody() {
         final ResponseEntity<String> response = restTemplate.postForEntity(
-            "http://localhost:" + port + "/streets/update",
+            String.format(path, port, "/update"),
             null,
             String.class
         );
-        Assertions.assertEquals("Updated database with 3054 records.", response.getBody());
+        Assertions.assertAll(
+            () -> Assertions.assertEquals(201, response.getStatusCodeValue()),
+            () -> Assertions.assertEquals("Updated database with 3054 records.", response.getBody())
+        );
     }
 }
