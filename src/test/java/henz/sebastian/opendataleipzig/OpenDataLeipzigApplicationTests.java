@@ -8,6 +8,6 @@ class OpenDataLeipzigApplicationTests {
 
     @Test
     void contextLoads() {
+        // Makes sure that the app successfully starts.
     }
-
 }
