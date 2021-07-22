@@ -33,7 +33,7 @@ public class StreetController {
         );
     }
 
-    @GetMapping(path = "/all", produces = "application/json")
+    @GetMapping(path = "/all")
     public List<Strasse> getAllStreets() {
         return streetRepository.findAll();
     }

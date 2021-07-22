@@ -3,7 +3,7 @@ package henz.sebastian.opendataleipzig;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,18 +27,18 @@ class Strasse {
 
     @Embedded
     @NotNull
-    @JacksonXmlProperty(localName = "STAMMDATEN")
+    @JsonProperty("STAMMDATEN")
     private Stammdaten stammdaten;
 
     @Embedded
-    @JacksonXmlProperty(localName = "CHAR")
+    @JsonProperty("CHAR")
     private Charakteristika charakteristika;
 
-    @JacksonXmlProperty(localName = "MGLZZHG")
-    private String mglzzhg;  // ?
+    @JsonProperty("MGLZZHG")
+    private String mglzzhg;  // Keine Ahnung, was das sein soll.
 
     @Column(columnDefinition = "text")
-    @JacksonXmlProperty(localName = "BEMERKUNG")
+    @JsonProperty("BEMERKUNG")
     private String bemerkung;  // Allgemeine Bemerkung
 
     @Embeddable
@@ -49,13 +49,13 @@ class Strasse {
 
         @NotNull
         @NotBlank
-        @JacksonXmlProperty(localName = "NAME")
+        @JsonProperty("NAME")
         private String name;  // Straßenname
 
         @NotNull
         @NotBlank
         @Column(length = 5, unique = true)
-        @JacksonXmlProperty(localName = "SCHLUESSEL")
+        @JsonProperty("SCHLUESSEL")
         private String schluessel;  // Straßenschlüssel
     }
 
@@ -65,44 +65,44 @@ class Strasse {
     @NoArgsConstructor
     private static class Charakteristika {
 
-        @JacksonXmlProperty(localName = "LAENGE")
+        @JsonProperty("LAENGE")
         private Integer laenge;  // Länge der Straße in Metern
 
-        @JacksonXmlProperty(localName = "ADR")
+        @JsonProperty("ADR")
         private Integer adr;  // Anzahl der amtlich vergebenen Adressen in der Straße
 
-        @JacksonXmlProperty(localName = "ADRSTAND")
+        @JsonProperty("ADRSTAND")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
         private LocalDate adrstand; // Zeitbezug zur Anzahl der Adressen
 
-        @JacksonXmlProperty(localName = "EINWOHNER")
+        @JsonProperty("EINWOHNER")
         private Integer einwohner;  // Anzahl der Einwohner, die in der Straße wohnhaft gemeldet sind
 
-        @JacksonXmlProperty(localName = "EINWOHNERSTAND")
+        @JsonProperty("EINWOHNERSTAND")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
         private LocalDate einwohnerstand;  // Zeitbezug zur Anzahl der Einwohner
 
-        @JacksonXmlProperty(localName = "FIRMEN")
+        @JsonProperty("FIRMEN")
         private Integer firmen;  // Anhzahl der IHK-Unternehmen, die in der Straße gemeldet sind
 
-        @JacksonXmlProperty(localName = "FIRMENSTAND")
+        @JsonProperty("FIRMENSTAND")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
         private LocalDate firmenstand;  // Zeitbezug zur Anzahl der Unternehmen
 
-        @JacksonXmlProperty(localName = "GEWERBE")
+        @JsonProperty("GEWERBE")
         private Integer gewerbe;  // Anzahl der Handwerksbetriebe, die in der Straße gemeldet sind
 
-        @JacksonXmlProperty(localName = "GEWERBESTAND")
+        @JsonProperty("GEWERBESTAND")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
         private LocalDate gewerbestand;  // Zeitbezug zur Anzahl der Handwerksbetriebe
 
-        @JacksonXmlProperty(localName = "VERWEISE")
+        @JsonProperty("VERWEISE")
         private String verweise;  // ?
 
-        @JacksonXmlProperty(localName = "CHARACTER")
+        @JsonProperty("CHARACTER")
         private String character;  // Beschaffenheit, z.B. "Gemeindestraße - Anliegerstraße; Breite 5 m"
 
-        @JacksonXmlProperty(localName = "REALBEZUG")
+        @JsonProperty("REALBEZUG")
         private String realbezug;  // scheinbar ungenutzt?
     }
 }
