@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class StreetService {
@@ -68,14 +70,14 @@ public class StreetService {
             .registerModule(customDeserializers);
 
         final File file = new File("data/Strassenverzeichnis.xml");
-        final StrassenVerzeichnis sv;
+        final List<Strasse> streets;
         try {
-            sv = mapper.readValue(file, StrassenVerzeichnis.class);
+            streets = Arrays.asList(mapper.readValue(file, Strasse[].class));
         } catch(final IOException e) {
             e.printStackTrace();
             return 0L;
         }
-        streetRepository.saveAll(sv.getStrassen());
+        streetRepository.saveAll(streets);
 
         // DEBUG: Build the xml to check if its structure is as expected.
         // final StrassenVerzeichnis verzeichnis = new StrassenVerzeichnis();
