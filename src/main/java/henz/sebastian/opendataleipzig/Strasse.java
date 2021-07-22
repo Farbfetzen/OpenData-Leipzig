@@ -37,68 +37,65 @@ public class Strasse {
     @Column(columnDefinition = "text")
     @JacksonXmlProperty(localName = "BEMERKUNG")
     private String bemerkung;  // Allgemeine Bemerkung
-}
 
+    @Embeddable
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    private static class Stammdaten {
 
-@Embeddable
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-class Stammdaten {
+        @JacksonXmlProperty(localName = "NAME")
+        private String name;  // Straßenname
 
-    @JacksonXmlProperty(localName = "NAME")
-    private String name;  // Straßenname
+        @Column(length = 5)
+        @JacksonXmlProperty(localName = "SCHLUESSEL")
+        private String schluessel;  // Straßenschlüssel
+    }
 
-    @Column(length = 5)
-    @JacksonXmlProperty(localName = "SCHLUESSEL")
-    private String schluessel;  // Straßenschlüssel
-}
+    @Embeddable
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    private static class Charakteristika {
 
+        @JacksonXmlProperty(localName = "LAENGE")
+        private Integer laenge;  // Länge der Straße in Metern
 
-@Embeddable
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
-class Charakteristika {
+        @JacksonXmlProperty(localName = "ADR")
+        private Integer adr;  // Anzahl der amtlich vergebenen Adressen in der Straße
 
-    @JacksonXmlProperty(localName = "LAENGE")
-    private Integer laenge;  // Länge der Straße in Metern
+        @JacksonXmlProperty(localName = "ADRSTAND")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
+        private LocalDate adrstand; // Zeitbezug zur Anzahl der Adressen
 
-    @JacksonXmlProperty(localName = "ADR")
-    private Integer adr;  // Anzahl der amtlich vergebenen Adressen in der Straße
+        @JacksonXmlProperty(localName = "EINWOHNER")
+        private Integer einwohner;  // Anzahl der Einwohner, die in der Straße wohnhaft gemeldet sind
 
-    @JacksonXmlProperty(localName = "ADRSTAND")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
-    private LocalDate adrstand; // Zeitbezug zur Anzahl der Adressen
+        @JacksonXmlProperty(localName = "EINWOHNERSTAND")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
+        private LocalDate einwohnerstand;  // Zeitbezug zur Anzahl der Einwohner
 
-    @JacksonXmlProperty(localName = "EINWOHNER")
-    private Integer einwohner;  // Anzahl der Einwohner, die in der Straße wohnhaft gemeldet sind
+        @JacksonXmlProperty(localName = "FIRMEN")
+        private Integer firmen;  // Anhzahl der IHK-Unternehmen, die in der Straße gemeldet sind
 
-    @JacksonXmlProperty(localName = "EINWOHNERSTAND")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
-    private LocalDate einwohnerstand;  // Zeitbezug zur Anzahl der Einwohner
+        @JacksonXmlProperty(localName = "FIRMENSTAND")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
+        private LocalDate firmenstand;  // Zeitbezug zur Anzahl der Unternehmen
 
-    @JacksonXmlProperty(localName = "FIRMEN")
-    private Integer firmen;  // Anhzahl der IHK-Unternehmen, die in der Straße gemeldet sind
+        @JacksonXmlProperty(localName = "GEWERBE")
+        private Integer gewerbe;  // Anzahl der Handwerksbetriebe, die in der Straße gemeldet sind
 
-    @JacksonXmlProperty(localName = "FIRMENSTAND")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
-    private LocalDate firmenstand;  // Zeitbezug zur Anzahl der Unternehmen
+        @JacksonXmlProperty(localName = "GEWERBESTAND")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
+        private LocalDate gewerbestand;  // Zeitbezug zur Anzahl der Handwerksbetriebe
 
-    @JacksonXmlProperty(localName = "GEWERBE")
-    private Integer gewerbe;  // Anzahl der Handwerksbetriebe, die in der Straße gemeldet sind
+        @JacksonXmlProperty(localName = "VERWEISE")
+        private String verweise;  // ?
 
-    @JacksonXmlProperty(localName = "GEWERBESTAND")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
-    private LocalDate gewerbestand;  // Zeitbezug zur Anzahl der Handwerksbetriebe
+        @JacksonXmlProperty(localName = "CHARACTER")
+        private String character;  // Beschaffenheit, z.B. "Gemeindestraße - Anliegerstraße; Breite 5 m"
 
-    @JacksonXmlProperty(localName = "VERWEISE")
-    private String verweise;  // ?
-
-    @JacksonXmlProperty(localName = "CHARACTER")
-    private String character;  // Beschaffenheit, z.B. "Gemeindestraße - Anliegerstraße; Breite 5 m"
-
-    @JacksonXmlProperty(localName = "REALBEZUG")
-    private String realbezug;  // scheinbar ungenutzt?
+        @JacksonXmlProperty(localName = "REALBEZUG")
+        private String realbezug;  // scheinbar ungenutzt?
+    }
 }
