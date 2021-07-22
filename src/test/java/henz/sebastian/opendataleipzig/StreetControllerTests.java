@@ -12,17 +12,21 @@ import org.springframework.http.ResponseEntity;
 class StreetControllerTests {
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    private TestRestTemplate testRestTemplate;
 
-    private final String path;
+    private final String url;
 
     StreetControllerTests(@Value("${server.port}") final int port) {
-        path = "http://localhost:" + port + "/streets";
+        url = "http://localhost:" + port + "/streets";
     }
 
     @Test
     void updateReturnsCorrectStatusAndBody() {
-        final ResponseEntity<String> response = restTemplate.postForEntity(path + "/update", null, String.class);
+        final ResponseEntity<String> response = testRestTemplate.postForEntity(
+            url + "/update",
+            null,
+            String.class
+        );
         Assertions.assertAll(
             () -> Assertions.assertEquals(201, response.getStatusCodeValue()),
             () -> Assertions.assertEquals("Updated database with 3054 records.", response.getBody())

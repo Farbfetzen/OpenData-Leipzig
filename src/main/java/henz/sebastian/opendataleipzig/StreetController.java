@@ -2,10 +2,10 @@ package henz.sebastian.opendataleipzig;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -36,10 +36,5 @@ public class StreetController {
     @GetMapping(path = "/all")
     public List<Strasse> getAllStreets() {
         return streetRepository.findAll();
-    }
-
-    @PostMapping(path = "/add")
-    public void addStreet(@RequestBody @Valid final Strasse street) {
-        streetRepository.save(street);
     }
 }

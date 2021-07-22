@@ -45,7 +45,7 @@ class Strasse {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    private static class Stammdaten {
+    static class Stammdaten {
 
         @NotNull
         @NotBlank
