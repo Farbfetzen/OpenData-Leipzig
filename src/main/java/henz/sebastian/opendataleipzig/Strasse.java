@@ -18,7 +18,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Strasse {
+class Strasse {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
