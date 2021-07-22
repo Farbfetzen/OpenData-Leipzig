@@ -1,7 +1,6 @@
 package henz.sebastian.opendataleipzig;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,6 +8,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.ResponseEntity;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class StreetControllerTests {
 
     @Autowired
@@ -21,6 +21,7 @@ class StreetControllerTests {
     }
 
     @Test
+    @Order(1)
     void updateReturnsCorrectStatusAndBody() {
         final ResponseEntity<String> response = testRestTemplate.postForEntity(
             url + "/update",
@@ -31,5 +32,12 @@ class StreetControllerTests {
             () -> Assertions.assertEquals(201, response.getStatusCodeValue()),
             () -> Assertions.assertEquals("Updated database with 3054 records.", response.getBody())
         );
+    }
+
+    @Test
+    @Order(2)
+    void getAllReturnsCorrectNumberOfStreets() throws Exception {
+        final Strasse[] streets = testRestTemplate.getForObject(url + "/all", Strasse[].class);
+        Assertions.assertEquals(3054, streets.length);
     }
 }

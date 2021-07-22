@@ -63,7 +63,7 @@ class Strasse {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    private static class Charakteristika {
+    static class Charakteristika {
 
         @JsonProperty("LAENGE")
         private Integer laenge;  // Länge der Straße in Metern

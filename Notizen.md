@@ -10,6 +10,7 @@
     - Update erzeugt Tabelle mit richtiger Länge.
 - Straße suchen mit Namen oder Länge > x oder Population < y.
 - Bei der ersten Abfrage, falls das Repo leer ist (mit repo.count() == 0) die Daten aktualisieren.
+- TODO: alle felder aus der xml in Strasse übernehmen
 
 ## Web-Adressen:
 

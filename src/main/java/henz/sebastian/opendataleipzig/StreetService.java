@@ -77,11 +77,15 @@ public class StreetService {
         }
         streetRepository.saveAll(sv.getStrassen());
 
-        // DEBUG: Baue das xml auf und checke so, ob die Struktur dem gewünschten entspricht.
+        // DEBUG: Build the xml to check if its structure is as expected.
         // final StrassenVerzeichnis verzeichnis = new StrassenVerzeichnis();
         // final List<Strasse> streets = new ArrayList<>();
-        // streets.add(new Strasse(1, "foo", "bar"));
-        // streets.add(new Strasse(2, "hurr", "baz"));
+        // final Strasse street1 = new Strasse();
+        // street1.setStammdaten(new Strasse.Stammdaten("name1", "key01"));
+        // final Strasse street2 = new Strasse();
+        // street2.setStammdaten(new Strasse.Stammdaten("name2", "key02"));
+        // streets.add(street1);
+        // streets.add(street2);
         // verzeichnis.setStrassen(streets);
         // try {
         //     final String xml = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(verzeichnis);
