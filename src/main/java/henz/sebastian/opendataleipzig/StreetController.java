@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -43,10 +44,10 @@ public class StreetController {
         return streetRepository.findAll();
     }
 
-    // @PostMapping(path = "/add")
-    // public Street addStreet(@RequestBody @Valid final Street street) {
-    //     return streetRepository.save(street);
-    // }
+    @PostMapping(path = "/add")
+    public void addStreet(@RequestBody @Valid final Strasse street) {
+        streetRepository.save(street);
+    }
 
     /** Update the database by deleting all entries and populating it from xml file.
      *

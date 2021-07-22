@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
@@ -24,6 +26,7 @@ public class Strasse {
     private int id;
 
     @Embedded
+    @NotNull
     @JacksonXmlProperty(localName = "STAMMDATEN")
     private Stammdaten stammdaten;
 
@@ -44,10 +47,14 @@ public class Strasse {
     @NoArgsConstructor
     private static class Stammdaten {
 
+        @NotNull
+        @NotBlank
         @JacksonXmlProperty(localName = "NAME")
         private String name;  // Straßenname
 
-        @Column(length = 5)
+        @NotNull
+        @NotBlank
+        @Column(length = 5, unique = true)
         @JacksonXmlProperty(localName = "SCHLUESSEL")
         private String schluessel;  // Straßenschlüssel
     }
