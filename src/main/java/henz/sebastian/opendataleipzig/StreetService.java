@@ -11,8 +11,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
@@ -69,10 +69,10 @@ public class StreetService {
             .registerModule(new JavaTimeModule())
             .registerModule(customDeserializers);
 
-        final File file = new File("data/Strassenverzeichnis.xml");
         final List<Strasse> streets;
         try {
-            streets = Arrays.asList(mapper.readValue(file, Strasse[].class));
+            final URL url = new URL("https://leipzig.de/fachanwendungen/geoinformation/Strassenbeschreibung/Strassenverzeichnis.xml");
+            streets = Arrays.asList(mapper.readValue(url, Strasse[].class));
         } catch(final IOException e) {
             e.printStackTrace();
             return 0L;
