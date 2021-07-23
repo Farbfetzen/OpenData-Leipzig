@@ -33,7 +33,7 @@ public class StreetController {
     }
 
     @GetMapping(path = "/all")
-    public List<Strasse> getAllStreets() {
+    public List<Street> getAllStreets() {
         return streetRepository.findAll();
     }
 }

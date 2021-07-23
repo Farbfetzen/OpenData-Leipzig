@@ -34,7 +34,7 @@ class StreetControllerTests {
 
     @Test
     void getAllReturnsCorrectNumberOfStreets() throws Exception {
-        final Strasse[] streets = testRestTemplate.getForObject(url + "/all", Strasse[].class);
+        final Street[] streets = testRestTemplate.getForObject(url + "/all", Street[].class);
         Assertions.assertEquals(3054, streets.length);
     }
 }

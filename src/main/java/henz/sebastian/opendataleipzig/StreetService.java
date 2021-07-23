@@ -69,10 +69,10 @@ public class StreetService {
             .registerModule(new JavaTimeModule())
             .registerModule(customDeserializers);
 
-        final List<Strasse> streets;
+        final List<Street> streets;
         try {
             final URL url = new URL("https://leipzig.de/fachanwendungen/geoinformation/Strassenbeschreibung/Strassenverzeichnis.xml");
-            streets = Arrays.asList(mapper.readValue(url, Strasse[].class));
+            streets = Arrays.asList(mapper.readValue(url, Street[].class));
         } catch(final IOException e) {
             e.printStackTrace();
             return 0L;
@@ -80,20 +80,17 @@ public class StreetService {
         streetRepository.saveAll(streets);
 
         // DEBUG: Build the xml to check if its structure is as expected.
-        // final StrassenVerzeichnis verzeichnis = new StrassenVerzeichnis();
-        // final List<Strasse> streets = new ArrayList<>();
-        // final Strasse street1 = new Strasse();
-        // street1.setStammdaten(new Strasse.Stammdaten("name1", "key01"));
-        // final Strasse street2 = new Strasse();
-        // street2.setStammdaten(new Strasse.Stammdaten("name2", "key02"));
-        // streets.add(street1);
-        // streets.add(street2);
-        // verzeichnis.setStrassen(streets);
+        // final Street[] streets = new Street[2];
+        // final Street street1 = new Street();
+        // street1.setStammdaten(new Street.Stammdaten("name1", "key01"));
+        // final Street street2 = new Street();
+        // street2.setStammdaten(new Street.Stammdaten("name2", "key02"));
+        // streets[0] = street1;
+        // streets[1] = street2;
         // try {
-        //     final String xml = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(verzeichnis);
+        //     final String xml = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(streets);
         //     System.out.println(xml);
         // } catch(final JsonProcessingException e) {
-        //     System.out.println("Error processing sv object.");
         //     e.printStackTrace();
         // }
 
