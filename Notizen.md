@@ -9,23 +9,21 @@
     - Straße suchen mit falschem Namen.
     - Update erzeugt Tabelle mit richtiger Länge.
 - Straße suchen mit Namen oder Länge > x oder Population < y.
-- Bei der ersten Abfrage, falls das Repo leer ist (mit repo.count() == 0) die Daten aktualisieren.
 - TODO: alle felder aus der xml in Strasse übernehmen
 
 ## Web-Adressen:
 
 - H2-Konsole
-  - http://localhost:8080/h2-console
+  - http://localhost:8080/h2
   - JDBC URL = jdbc:h2:file:./data
   - User Name = user
   - kein Passwort
 - Alle Straßen abfragen:
-  - http://localhost:8080/streets/all
+  - GET http://localhost:8080/streets/all
   - Gibt eine Liste von Straßen zurück.
 - Update:
   - POST http://localhost:8080/streets/update
-  - Lädt Straßeninformationen aus einer XML-Datei in die Datenbank.
-    Wird später die Daten direkt aus dem Web herunterladen statt aus einer Datei.
+  - Aktualisiert die lokale Datenbank.
   
 ## Links
 - Opendata-Portal der Stadt Leipzig: https://opendata.leipzig.de

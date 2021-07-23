@@ -8,7 +8,6 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.ResponseEntity;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class StreetControllerTests {
 
     @Autowired
@@ -21,7 +20,6 @@ class StreetControllerTests {
     }
 
     @Test
-    @Order(1)
     void updateReturnsCorrectStatusAndBody() {
         final ResponseEntity<String> response = testRestTemplate.postForEntity(
             url + "/update",
@@ -35,7 +33,6 @@ class StreetControllerTests {
     }
 
     @Test
-    @Order(2)
     void getAllReturnsCorrectNumberOfStreets() throws Exception {
         final Strasse[] streets = testRestTemplate.getForObject(url + "/all", Strasse[].class);
         Assertions.assertEquals(3054, streets.length);
