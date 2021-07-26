@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -76,6 +77,50 @@ class StreetControllerTests {
         Assertions.assertAll(
             () -> Assertions.assertEquals("Gerhard-Ellrodt-Straße", streets[0].getStammdaten().getName()),
             () -> Assertions.assertEquals("Richard-Lehmann-Straße", streets[9].getStammdaten().getName())
+        );
+    }
+
+    @Test
+    void GetByName() {
+        final String nameUrl = url + "/get?name={name}";
+        final Street street = testRestTemplate.getForObject(
+            nameUrl,
+            Street.class,
+            "Georg-Schumann-Straße"
+        );
+        final ResponseEntity<String> notFoundResponse = testRestTemplate.getForEntity(
+            nameUrl,
+            String.class,
+            "Foo"
+        );
+        Assertions.assertAll(
+            () -> Assertions.assertEquals("07001", street.getStammdaten().getSchluessel()),
+            () -> Assertions.assertEquals(HttpStatus.NOT_FOUND, notFoundResponse.getStatusCode())
+        );
+    }
+
+    @Test
+    void GetBySchluessel() {
+        final String schluesselUrl = url + "/get?schluessel={schluessel}";
+        final Street street = testRestTemplate.getForObject(
+            schluesselUrl,
+            Street.class,
+            "01016"
+        );
+        final ResponseEntity<String> notFoundResponse = testRestTemplate.getForEntity(
+            schluesselUrl,
+            String.class,
+            "12345"
+        );
+        final ResponseEntity<String> badRequestResponse = testRestTemplate.getForEntity(
+            schluesselUrl,
+            String.class,
+            "abcde"
+        );
+        Assertions.assertAll(
+            () -> Assertions.assertEquals("Markt", street.getStammdaten().getName()),
+            () -> Assertions.assertEquals(HttpStatus.NOT_FOUND, notFoundResponse.getStatusCode()),
+            () -> Assertions.assertEquals(HttpStatus.BAD_REQUEST, badRequestResponse.getStatusCode())
         );
     }
 }

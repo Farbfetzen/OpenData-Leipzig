@@ -7,12 +7,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @RestController
 @RequestMapping(path = "/streets")
+@Validated
 public class StreetController {
 
     @Autowired
@@ -42,9 +45,9 @@ public class StreetController {
     }
 
     @GetMapping(path = "/sortby")
-    Page<Street> getStreets(@RequestParam final String param,
-                            @RequestParam(defaultValue = "0") final int page,
-                            @RequestParam(defaultValue = "true") final boolean desc) {
+    Page<Street> getSorted(@RequestParam final String param,
+                           @RequestParam(defaultValue = "0") final int page,
+                           @RequestParam(defaultValue = "true") final boolean desc) {
         final Pageable pageable = PageRequest.of(
             page,
             10,
@@ -52,5 +55,15 @@ public class StreetController {
             param
         );
         return streetRepository.findAll(pageable);
+    }
+
+    @GetMapping(path = "/get", params = "name")
+    Street getByName(@RequestParam final String name) {
+        return streetRepository.findByStammdaten_Name(name).orElseThrow();
+    }
+
+    @GetMapping(path = "/get", params = "schluessel")
+    Street getBySchluessel(@RequestParam @Pattern(regexp = "^\\d{5}$") final String schluessel) {
+        return streetRepository.findByStammdaten_Schluessel(schluessel).orElseThrow();
     }
 }

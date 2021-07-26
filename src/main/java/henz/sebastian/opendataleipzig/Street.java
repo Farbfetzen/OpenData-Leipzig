@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Street {
+public class Street {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
