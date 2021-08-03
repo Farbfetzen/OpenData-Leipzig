@@ -13,6 +13,8 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Objects;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 class StreetControllerTests {
 
@@ -42,16 +44,20 @@ class StreetControllerTests {
             null,
             String.class
         );
-        Assertions.assertAll(
-            () -> Assertions.assertEquals(201, response.getStatusCodeValue()),
-            () -> Assertions.assertEquals("Updated database with 3054 records.", response.getBody())
-        );
+        final String responseString = Objects.requireNonNull(response.getBody());
+        final int n = Integer.parseInt(responseString.replaceAll("\\D+", ""));
+        // The number of streets may change. That's why it is checked to be greater than 3000.
+        Assertions.assertTrue(n > 3000, "Number of Streets should be greater than 3000 but is " + n + ".");
     }
 
     @Test
     void getAllReturnsCorrectNumberOfStreets() {
         final Street[] streets = testRestTemplate.getForObject(url + "/all", Street[].class);
-        Assertions.assertEquals(3054, streets.length);
+        // The number of streets may change. That's why it is checked to be greater than 3000.
+        Assertions.assertTrue(
+            streets.length > 3000,
+            "Number of Streets should be greater than 3000 but is " + streets.length + "."
+        );
     }
 
     @Test
